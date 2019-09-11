@@ -13,16 +13,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    // This button will pass the Google website url to the MyWebView.class
+    // This button will pass the Google website url to MyWebView.class
     public void googleButton(View view) {
         MyWebView.url = "https://www.google.com/";
         Intent intent = new Intent(this, MyWebView.class);
         startActivity(intent);
     }
 
-    // This button will pass the In Tech Geek website url to the MyWebView.class
+    // This button will pass the techStop website url to MyWebView.class
     public void itgButton(View view) {
-        MyWebView.url = "https://intechgeek.com/";
+        MyWebView.url = "https://techstop.github.io/";
         Intent intent = new Intent(this, MyWebView.class);
         startActivity(intent);
     }

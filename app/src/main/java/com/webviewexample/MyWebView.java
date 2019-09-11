@@ -22,6 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import java.util.Objects;
+
 public class MyWebView extends AppCompatActivity {
     // Declare our web view.
     private WebView webview;
@@ -77,7 +79,7 @@ public class MyWebView extends AppCompatActivity {
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 // Check for storage write permission before attempting to download.
                 if (getPermission()) {
-                    dm.enqueue(request);
+                    Objects.requireNonNull(dm).enqueue(request);
                 }
             }
         });
@@ -107,13 +109,11 @@ public class MyWebView extends AppCompatActivity {
     // run code for either situation. This method is optional, but useful.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case WRITE_STORAGE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(), "Permission Granted!", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Permission Denied!", Toast.LENGTH_LONG).show();
-                }
+        if (requestCode == WRITE_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getApplicationContext(), "Permission Granted!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Permission Denied!", Toast.LENGTH_LONG).show();
             }
         }
     }

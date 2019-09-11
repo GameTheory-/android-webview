@@ -17,6 +17,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="itgButton"
-        android:text="@string/in_tech_geek"/>
+        android:text="@string/tech_Stop"/>
 
 </LinearLayout>
