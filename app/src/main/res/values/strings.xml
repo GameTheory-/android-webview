@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WebView Example</string>
-    <string name="google">GOOGLE</string>
-    <string name="tech_Stop">techStop</string>
+  <string name="app_name">WebView Example</string>
+  <string name="google">GOOGLE</string>
+  <string name="tech_Stop">techStop</string>
 </resources>
