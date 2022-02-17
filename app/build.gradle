@@ -1,24 +1,33 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
 
 android {
-  compileSdkVersion 29
-  buildToolsVersion "29.0.2"
-  defaultConfig {
-    applicationId "com.webviewexample"
-    minSdkVersion 19
-    targetSdkVersion 29
-    versionCode 1
-    versionName "1.0"
-  }
-  buildTypes {
-    release {
-      minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    compileSdk 31
+
+    defaultConfig {
+      applicationId "com.webviewexample"
+      minSdk 21
+      targetSdk 31
+      versionCode 1
+      versionName "1.0"
     }
-  }
+
+    buildTypes {
+      release {
+        minifyEnabled true
+        shrinkResources true
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+      }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
-  implementation 'androidx.appcompat:appcompat:1.1.0'
+  implementation 'androidx.appcompat:appcompat:1.4.1'
 }

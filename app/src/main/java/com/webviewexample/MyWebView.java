@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.webkit.CookieManager;
-import android.webkit.DownloadListener;
 import android.webkit.URLUtil;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -22,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import java.util.Objects;
 
 public class MyWebView extends AppCompatActivity {
   // Declare our web view.
@@ -67,22 +65,20 @@ public class MyWebView extends AppCompatActivity {
 
     // Adds a DownloadListener to our web view. This allows us to click on
     // download links and have items download to our downloads directory.
-    webview.setDownloadListener(new DownloadListener() {
-      public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-        String fileName = URLUtil.guessFileName(url, contentDisposition, mimetype);
-        String cookie = CookieManager.getInstance().getCookie(url);
-        DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-        request.setAllowedOverRoaming(false);
-        request.allowScanningByMediaScanner();
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
-        request.addRequestHeader("Cookie", cookie);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        // Check for storage write permission before attempting to download.
-        if (getPermission()) {
-          Objects.requireNonNull(dm).enqueue(request);
-        }
+    webview.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
+      String fileName = URLUtil.guessFileName(url, contentDisposition, null);
+      String cookie = CookieManager.getInstance().getCookie(url);
+      DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+      DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+      request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+      request.setAllowedOverRoaming(false);
+      request.allowScanningByMediaScanner();
+      request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+      request.addRequestHeader("Cookie", cookie);
+      request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+      // Check for storage write permission before attempting to download.
+      if (getPermission() && dm != null) {
+        dm.enqueue(request);
       }
     });
 
@@ -109,11 +105,12 @@ public class MyWebView extends AppCompatActivity {
   // run code for either situation. This method is optional, but useful.
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     if (requestCode == WRITE_STORAGE) {
       if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         Toast.makeText(getApplicationContext(), "Permission Granted. Try download again.", Toast.LENGTH_LONG).show();
       } else {
-        Toast.makeText(getApplicationContext(), "Permission Denied!", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Permission Denied! Cannot Download.", Toast.LENGTH_LONG).show();
       }
     }
   }

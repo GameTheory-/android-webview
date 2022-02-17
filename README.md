@@ -1,6 +1,6 @@
 ## Android WebView Tutorial
 
-This is a sample app for educational purpose. This app will demonstrate how to setup an android webview.
+This is a sample app to demonstrate how to setup an android webview with a progress bar (ProgressBar).
 
 ### Project Page with Tutorial
 

@@ -10,13 +10,13 @@
   <Button
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:onClick="googleButton"
+    android:id="@+id/googleButton"
     android:text="@string/google" />
 
   <Button
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:onClick="itgButton"
+    android:id="@+id/tsButton"
     android:text="@string/tech_Stop" />
 
 </LinearLayout>
